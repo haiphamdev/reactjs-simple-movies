@@ -1,40 +1,31 @@
 import { Fragment } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 import 'swiper/scss';
-import MovieList from './components/movie/MovieList';
+import Banner from './components/banner/Banner';
+import Main from './components/layout/Main';
+import HomePage from './pages/HomePage';
+import MovieDetailPage from './pages/MovieDetailPage';
+import MoviePage from './pages/MoviePage';
 
 function App() {
   return (
     <Fragment>
-      <header className="header flex items-center justify-center gap-x-5 text-white py-10 mb-5">
-        <span className="text-primary">Home</span>
-        <span>Movies</span>
-      </header>
-      <section className="banner h-[500px] page-container mb-10">
-        <div className="w-full h-full rounded-lg relative">
-          <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
-          <img
-            src="https://nld.mediacdn.vn/2019/4/3/avengers-endgame-poster-og-social-crop-15542720808371479664269.jpg"
-            alt=""
-            className="w-full h-full object-cover rounded-lg"
+      <Routes>
+        <Route element={<Main />}>
+          <Route
+            path="/"
+            element={
+              <>
+                <Banner />
+                <HomePage />
+              </>
+            }
           />
-          <div className="absolute left-5 bottom-5 w-full text-white">
-            <h2 className="font-bold text-3xl mb-5">Avengers: Endgame</h2>
-            <div className="flex items-center gap-x-3 mb-8">
-              <span className="py-2 px-4 border border-white rounded-lg">Adventure</span>
-              <span className="py-2 px-4 border border-white rounded-lg">Adventure</span>
-              <span className="py-2 px-4 border border-white rounded-lg">Adventure</span>
-            </div>
-            <button className="py-3 px-6 rounded-lg bg-primary text-white font-medium">
-              Watch now
-            </button>
-          </div>
-        </div>
-      </section>
-      <section className="movies-layout page-container pb-20">
-        <h2 className="capitalize text-white mb-5 text-3xl font-bold">Now Playing</h2>
-        <MovieList />
-      </section>
+          <Route path="/movie" element={<MoviePage />} />
+          <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+        </Route>
+      </Routes>
     </Fragment>
   );
 }
