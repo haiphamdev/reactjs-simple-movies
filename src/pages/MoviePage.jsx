@@ -4,9 +4,14 @@ import { apiKey, fetcher } from '../config';
 import useSWR from 'swr';
 
 const MoviePage = () => {
+  const [filter, setFilter] = useState('');
   const { data } = useSWR(`https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`, fetcher);
 
   const movies = data?.results || [];
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
   return (
     <div className="py-10 page-container">
       <div className="flex mb-10">
@@ -15,6 +20,7 @@ const MoviePage = () => {
             type="text"
             className="w-full p-4 bg-slate-800 text-white outline-none"
             placeholder="Type here to search..."
+            onChange={handleFilterChange}
           />
         </div>
         <button className="p-4 bg-primary text-white">
