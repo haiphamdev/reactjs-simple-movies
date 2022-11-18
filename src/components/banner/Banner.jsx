@@ -1,7 +1,9 @@
 import React from 'react';
-import { apiKey, fetcher } from '../../config';
+import { apiKey, fetcher, tmdbAPI } from '../../config';
 import useSWR from 'swr';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import Button from '../button/Button';
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
   const { data } = useSWR(`https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`, fetcher);
@@ -23,12 +25,13 @@ const Banner = () => {
 };
 
 function BannerItem({ item }) {
-  const { title, poster_path } = item;
+  const { poster_path, id } = item;
+  const navigate = useNavigate();
   return (
     <div className="w-full h-full rounded-lg relative">
       <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
       <img
-        src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+        src={tmdbAPI.imageOriginal(poster_path)}
         alt=""
         className="w-full h-full object-cover rounded-lg object-center"
       />
@@ -39,9 +42,9 @@ function BannerItem({ item }) {
           <span className="py-2 px-4 border border-white rounded-lg">Adventure</span>
           <span className="py-2 px-4 border border-white rounded-lg">Adventure</span>
         </div>
-        <button className="py-3 px-6 rounded-lg bg-primary text-white font-medium">
+        <Button bgColor="primary" onClick={() => navigate(`/movies/${id}`)}>
           Watch now
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -22,8 +22,8 @@ function App() {
               </>
             }
           />
-          <Route path="/movie" element={<MoviePage />} />
-          <Route path="/movie/:movieId" element={<MovieDetailPage />} />
+          <Route path="/movies" element={<MoviePage />} />
+          <Route path="/movies/:movieId" element={<MovieDetailPage />} />
         </Route>
       </Routes>
     </Fragment>
