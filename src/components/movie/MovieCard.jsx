@@ -1,10 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { tmdbAPI } from '@/config';
-import Button from '../button/Button';
+import { tmdbAPI } from '@/apiConfig/config';
+import Button from '@/components/button/Button';
+import PropTypes from 'prop-types';
+import { withErrorBoundary } from 'react-error-boundary';
+import LoadingSkeleton from '@/components/loading/LoadingSkeleton';
 
 const MovieCard = ({ item }) => {
-  const { release_date, vote_average, poster_path, id } = item;
+  const { title, release_date, vote_average, poster_path, id } = item;
   const navigate = useNavigate();
 
   return (
@@ -15,7 +18,7 @@ const MovieCard = ({ item }) => {
         className="w-full h-[250x] object-cover rounded-lg mb-5"
       />
       <div className="flex flex-col flex-1">
-        <h3 className="text-xl font-bold mb-3">Spiderman: Homecoming</h3>
+        <h3 className="text-xl font-bold mb-3">{title}</h3>
         <div className="flex items-center justify-between text-sm opacity-50 mb-10">
           <span>{new Date(release_date).getFullYear()}</span>
           <span>{vote_average}</span>
@@ -28,4 +31,42 @@ const MovieCard = ({ item }) => {
   );
 };
 
-export default MovieCard;
+MovieCard.propTypes = {
+  item: PropTypes.shape({
+    title: PropTypes.string,
+    release_date: PropTypes.string,
+    vote_average: PropTypes.number,
+    poster_path: PropTypes.string,
+    id: PropTypes.number,
+  }),
+};
+
+function FallbackComponent() {
+  return <p className="bg-red-50 text-red-400">Something went wrong with this component</p>;
+}
+
+export default withErrorBoundary(MovieCard, {
+  FallbackComponent,
+});
+
+export const MovieCardSkeleton = () => {
+  return (
+    <div className="movie-card flex flex-col border rounded-lg p-3 bg-slate-800 text-white h-full select-none">
+      <LoadingSkeleton width="100%" height="250px" radius="8px" className="mb-5" />
+      <div className="flex flex-col flex-1">
+        <h3 className="text-xl font-bold mb-3">
+          <LoadingSkeleton width="100%" height="20px" />
+        </h3>
+        <div className="flex items-center justify-between text-sm opacity-50 mb-10">
+          <span>
+            <LoadingSkeleton width="50px" height="10px" />
+          </span>
+          <span>
+            <LoadingSkeleton width="30px" height="10px" />
+          </span>
+        </div>
+        <LoadingSkeleton width="100%" height="45px" radius="6px" />
+      </div>
+    </div>
+  );
+};

@@ -6,7 +6,7 @@ const HomePage = () => {
     <Fragment>
       <section className="movies-layout page-container pb-20">
         <h2 className="capitalize text-white mb-5 text-3xl font-bold">Now Playing</h2>
-        <MovieList />
+        <MovieList type="now_playing" />
       </section>
       <section className="movies-layout page-container pb-20">
         <h2 className="capitalize text-white mb-5 text-3xl font-bold">Top rated</h2>
